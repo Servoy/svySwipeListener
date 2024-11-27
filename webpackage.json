@@ -1,0 +1,11 @@
+{
+    "name":"swipelistener",
+    "displayName":"Swipe Listener",
+    "packageType": "Web-Service",
+    "icon": "https://raw.githubusercontent.com/Servoy/svySwipeListener/master/icon.png",
+    "description": "Provides a service for sending swipe events to a server-side callback.",
+    "wikiUrl": "https://github.com/Servoy/svySwipeListener/wiki",
+    "sourceUrl" : "https://github.com/Servoy/svySwipeListener",
+    "releases" : [
+     ]
+}
