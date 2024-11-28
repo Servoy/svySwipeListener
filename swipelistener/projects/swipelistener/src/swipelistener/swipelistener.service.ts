@@ -37,7 +37,7 @@ export class SwipeListener implements OnDestroy {
                 var listener;
                 element.addEventListener(eventName, listener = (e: any) => {
                     const ev = this.servoyService.createJSEvent(e, eventName);
-                    callback.callback(ev, callback.callbackKey, callback.swipeDirection);
+                    callback.callback(ev, callback.callbackKey, e.detail.dir);
                 });
                 this.listeners.set(element, { eventName, listener });
             });
