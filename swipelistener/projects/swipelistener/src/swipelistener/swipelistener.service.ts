@@ -9,7 +9,7 @@ type CallableFunction = (...args: unknown[]) => void;
 @Injectable()
 export class SwipeListener implements OnDestroy {
     private _callbacks: Callback[] = [];
-    listeners = new Map();
+    listeners = new Array();
 
     constructor(@Inject(DOCUMENT) public doc: Document, private servoyService: ServoyPublicService) {
 
@@ -39,7 +39,7 @@ export class SwipeListener implements OnDestroy {
                     const ev = this.servoyService.createJSEvent(e, eventName);
                     callback.callback(ev, callback.callbackKey, e.detail.dir);
                 });
-                this.listeners.set(element, { eventName, listener });
+                this.listeners.push({element, eventName, listener });
             });
         }
     }
@@ -49,10 +49,10 @@ export class SwipeListener implements OnDestroy {
     }
 
     private removeListeners() {
-        this.listeners.forEach((value, key) => {
-            key.removeEventListener(value.eventName, value.listener);
+        this.listeners.forEach((value) => {
+            value.element.removeEventListener(value.eventName, value.listener);
         })
-        this.listeners.clear();
+        this.listeners = new Array();
     }
 }
 
