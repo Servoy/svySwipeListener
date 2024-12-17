@@ -34,18 +34,37 @@ export class SwipeListener implements OnDestroy {
                 if (callback.swipeDirection) {
                     eventName = eventName + '-' + callback.swipeDirection;
                 }
-                var listener;
-                element.addEventListener(eventName, listener = (e: any) => {
-                    const ev = this.servoyService.createJSEvent(e, eventName);
-                    callback.callback(ev, callback.callbackKey, e.detail.dir);
-                });
-                this.listeners.push({element, eventName, listener });
+                if (element) {
+                    this.addListener(element, eventName, callback);
+                }
+                else {
+                    setTimeout(() => {
+                        if (callback.component) {
+                            element = this.doc.getElementById(callback.component);
+                        }
+                        if (element) {
+                            this.addListener(element, eventName, callback);
+                        }
+                        else{
+                            console.warn("Cannot add swipe listener due to missing component.");
+                        }
+                    }, 1000);
+                }
             });
         }
     }
 
     ngOnDestroy() {
         this.removeListeners();
+    }
+
+    private addListener(element: Node, eventName: string, callback: Callback) {
+        var listener;
+        element.addEventListener(eventName, listener = (e: any) => {
+            const ev = this.servoyService.createJSEvent(e, eventName);
+            callback.callback(ev, callback.callbackKey, e.detail.dir);
+        });
+        this.listeners.push({ element, eventName, listener });
     }
 
     private removeListeners() {
