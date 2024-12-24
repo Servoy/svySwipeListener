@@ -1,5 +1,5 @@
 {
-    "name":"swipelistener",
+    "name":"svyswipelistener",
     "displayName":"Swipe Listener",
     "packageType": "Web-Service",
     "icon": "https://raw.githubusercontent.com/Servoy/svySwipeListener/master/icon.png",
