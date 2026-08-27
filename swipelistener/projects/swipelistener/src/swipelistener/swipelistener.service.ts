@@ -1,7 +1,7 @@
-import { Injectable, OnDestroy, Inject } from '@angular/core';
+import { Injectable, OnDestroy, Inject, DOCUMENT } from '@angular/core';
 
 import { ServoyPublicService } from '@servoy/public';
-import { DOCUMENT } from '@angular/common';
+
 import 'swiped-events';
 
 type CallableFunction = (...args: unknown[]) => void;
@@ -9,7 +9,7 @@ type CallableFunction = (...args: unknown[]) => void;
 @Injectable()
 export class SwipeListener implements OnDestroy {
     private _callbacks: Callback[] = [];
-    listeners = new Array();
+    listeners: any[] = [];
 
     constructor(@Inject(DOCUMENT) public doc: Document, private servoyService: ServoyPublicService) {
 
@@ -26,7 +26,7 @@ export class SwipeListener implements OnDestroy {
         this._callbacks = callbacks;
         if (this._callbacks != null && this._callbacks.length > 0) {
             this._callbacks.forEach(callback => {
-                let element: Node = this.doc;
+                let element: Node | null = this.doc;
                 let eventName = 'swiped';
                 if (callback.component) {
                     element = this.doc.getElementById(callback.component);
@@ -59,7 +59,7 @@ export class SwipeListener implements OnDestroy {
     }
 
     private addListener(element: Node, eventName: string, callback: Callback) {
-        var listener;
+        let listener;
         element.addEventListener(eventName, listener = (e: any) => {
             const ev = this.servoyService.createJSEvent(e, eventName);
             callback.callback(ev, callback.callbackKey, e.detail.dir);
@@ -71,13 +71,13 @@ export class SwipeListener implements OnDestroy {
         this.listeners.forEach((value) => {
             value.element.removeEventListener(value.eventName, value.listener);
         })
-        this.listeners = new Array();
+        this.listeners = [];
     }
 }
 
 class Callback {
-    public callbackKey: string;
-    public callback: CallableFunction;
-    public swipeDirection: string;
-    public component: string;
+    public callbackKey!: string;
+    public callback!: CallableFunction;
+    public swipeDirection!: string;
+    public component!: string;
 }
